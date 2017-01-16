@@ -2,25 +2,47 @@
 
 namespace WeDevs\ORM\WP;
 
-
-use WeDevs\ORM\Eloquent\Model;
-
-/**
- * Class Post
- *
- * @package WeDevs\ORM\WP
- */
-class Post extends Model
+class Post extends AbstractModelWithMetadata
 {
-
-    protected $post_type = null;
+    /**
+     * The primary key for the model.
+     *
+     * @var string
+     */
     protected $primaryKey = 'ID';
 
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'post_password',
+    ];
+
+    /**
+     * The name of the "created at" column.
+     *
+     * @var string
+     */
     const CREATED_AT = 'post_date';
+
+    /**
+     * The name of the "updated at" column.
+     *
+     * @var string
+     */
     const UPDATED_AT = 'post_modified';
 
     /**
-     * Filter by post type
+     * The primary key for the model.
+     *
+     * @var string
+     */
+    protected $metaType = 'post';
+
+    /**
+     * Scope: Filter by post type
      *
      * @param $query
      * @param string $type
@@ -33,7 +55,7 @@ class Post extends Model
     }
 
     /**
-     * Filter by post status
+     * Scope: Filter by post status
      *
      * @param $query
      * @param string $status
@@ -46,7 +68,7 @@ class Post extends Model
     }
 
     /**
-     * Filter by post author
+     * Scope: Filter by post author
      *
      * @param $query
      * @param null $author
@@ -61,7 +83,17 @@ class Post extends Model
     }
 
     /**
-     * Get comments from the post
+     * Relationship: Author
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function author()
+    {
+        return $this->belongsTo('WeDevs\ORM\WP\User', 'post_author');
+    }
+
+    /**
+     * Relationship: Comments
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -71,7 +103,7 @@ class Post extends Model
     }
 
     /**
-     * Get meta fields from the post
+     * Relationship: Meta
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

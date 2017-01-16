@@ -2,20 +2,46 @@
 
 namespace WeDevs\ORM\WP;
 
-
-use WeDevs\ORM\Eloquent\Model;
-
-class Comment extends Model
+class Comment  extends AbstractModelWithMetadata
 {
+    /**
+     * The primary key for the model.
+     *
+     * @var string
+     */
     protected $primaryKey = 'comment_ID';
 
     /**
-     * Post relation for a comment
+     * Indicates if the model should be timestamped.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @var bool
+     */
+    public $timestamps = false;
+
+    /**
+     * The primary key for the model.
+     *
+     * @var string
+     */
+    protected $metaType = 'comment';
+
+    /**
+     * Relationship: Post
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function post()
     {
-        return $this->hasOne('WeDevs\ORM\WP\Post');
+        return $this->belongsTo('WeDevs\ORM\WP\Post', 'post_id');
+    }
+
+    /**
+     * Relationship: Meta
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function meta()
+    {
+        return $this->hasMany('WeDevs\ORM\WP\CommentMeta', 'comment_id');
     }
 }

@@ -3,21 +3,21 @@
 namespace WeDevs\ORM\Eloquent\Facades;
 
 use Illuminate\Support\Facades\Facade;
-use WeDevs\ORM\Eloquent\Database;
+use WeDevs\ORM\Eloquent\Manager;
 
-/**
- * @see \Illuminate\Database\DatabaseManager
- * @see \Illuminate\Database\Connection
- */
 class DB extends Facade
 {
     /**
      * Get the registered name of the component.
      *
-     * @return string
+     * @return \WeDevs\ORM\Eloquent\Manager|string
      */
     protected static function getFacadeAccessor()
     {
-        return Database::instance();
+        if (static::$app && static::$app->bound('db')) {
+            return 'db';
+        }
+
+        return Manager::getInstance();
     }
 }

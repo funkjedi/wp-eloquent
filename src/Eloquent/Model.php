@@ -1,48 +1,51 @@
 <?php
+
 namespace WeDevs\ORM\Eloquent;
 
 use Illuminate\Database\Eloquent\Model as Eloquent;
+use WeDevs\ORM\Eloquent\Facades\DB;
 
-/**
- * Model Class
- *
- * @package WeDevs\ERP\Framework
- */
-abstract class Model extends Eloquent {
-
+abstract class Model extends Eloquent
+{
     /**
-     * @param array $attributes
-     */
-    public function __construct( array $attributes = array() ) {
-        static::$resolver = new Resolver();
-
-        parent::__construct( $attributes );
-    }
-
-    /**
-     * Get the database connection for the model.
+     * Indicates whether the WP table prefix should be used for the model.
      *
-     * @return \Illuminate\Database\Connection
+     * @var boolean
      */
-    public function getConnection() {
-        return Database::instance();
-    }
+    protected $tablePrefix = true;
 
     /**
      * Get the table associated with the model.
      *
-     * Append the WordPress table prefix with the table name if
-     * no table name is provided
-     *
      * @return string
      */
-    public function getTable() {
-        if ( isset( $this->table ) ) {
-            return $this->table;
+    public function getTable()
+    {
+        if (isset($this->table)) return $this->table;
+
+        $table = parent::getTable();
+
+        if ($this->tablePrefix) {
+            $table = $this->getConnection()->getWpdb()->prefix . $table;
         }
 
-        $table = str_replace( '\\', '', snake_case( str_plural( class_basename( $this ) ) ) );
+        return $table;
+    }
 
-        return $this->getConnection()->db->prefix . $table ;
+    /**
+     * Resolve a connection instance.
+     *
+     * @param  string  $connection
+     * @return \Illuminate\Database\Connection
+     */
+    public static function resolveConnection($connection = null)
+    {
+        // If a resolver hasn't been configured then setup
+        // up the capsule instance and resolve connection with it
+        if (static::$resolver === null) {
+            DB::connection();
+        }
+
+        return parent::resolveConnection($connection);
     }
 }

@@ -2,17 +2,39 @@
 
 namespace WeDevs\ORM\WP;
 
-
-use WeDevs\ORM\Eloquent\Model;
-
-class UserMeta extends Model
+class UserMeta extends AbstractMeta
 {
-    protected $primaryKey = 'meta_id';
+    /**
+     * The primary key for the model.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'umeta_id';
 
-    public $timestamps    = false;
+    /**
+     * The meta type for the model metadata.
+     *
+     * @var string
+     */
+    protected $metaType = 'user';
 
+    /**
+     * Get the table associated with the model.
+     *
+     * @return string
+     */
     public function getTable()
     {
-        return $this->getConnection()->db->prefix . 'usermeta';
+        return 'usermeta';
+    }
+
+    /**
+     * Relationship: User
+     *
+     * @return Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo('WeDevs\ORM\WP\User', 'user_id');
     }
 }

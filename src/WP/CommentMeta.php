@@ -2,14 +2,14 @@
 
 namespace WeDevs\ORM\WP;
 
-class PostMeta extends AbstractMeta
+class TermMeta extends AbstractMeta
 {
     /**
      * The meta type for the model metadata.
      *
      * @var string
      */
-    protected $metaType = 'post';
+    protected $metaType = 'comment';
 
     /**
      * Get the table associated with the model.
@@ -18,16 +18,16 @@ class PostMeta extends AbstractMeta
      */
     public function getTable()
     {
-        return 'postmeta';
+        return 'termmeta';
     }
 
     /**
-     * Relationship: Post
+     * Relationship: Comment
      *
      * @return Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function post()
+    public function commet()
     {
-        return $this->belongsTo('WeDevs\ORM\WP\Post', 'post_id');
+        return $this->belongsTo('WeDevs\ORM\WP\Comment', 'comment_id');
     }
 }
