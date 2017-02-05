@@ -19,6 +19,10 @@ class Manager extends CapsuleManager
      */
     public static function getInstance()
     {
+        if (static::$instance) {
+            return static::$instance;
+        }
+
         $container = Facade::getFacadeApplication();
 
         if ($container === null) {
