@@ -2,7 +2,7 @@
 
 namespace WeDevs\ORM\WP;
 
-class TermMeta extends AbstractMeta
+class CommentMeta extends AbstractMeta
 {
     /**
      * The meta type for the model metadata.
